@@ -24,6 +24,13 @@
   color: white;
 }
 
+.controls {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .App-link {
   color: #61dafb;
 }

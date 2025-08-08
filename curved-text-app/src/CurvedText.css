@@ -1,27 +1,21 @@
-.curved-text-container {
+.curved-text-wrapper {
+  display: inline-block; /* To make the border fit the content */
   position: relative;
+}
+
+.curved-text-svg {
+  display: block;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100%;
+  overflow: visible; /* To prevent clipping of text that might go slightly outside the viewBox */
+}
+
+.curved-text-text {
+  fill: currentColor; /* Inherit color from parent */
 }
 
 .straight-text {
   font-size: 24px;
-}
-
-.char-container {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  height: 200px; /* This should match the radius in the JS file */
-  font-size: 24px;
-  transform-origin: bottom center;
-}
-
-.char-itself {
-  display: block;
-  transform: translateY(-100%); /* Move the character up to the circumference */
-  /* To center the character itself on the line */
-  margin: 0 -0.5em;
+  padding: 1em; /* Add some padding so the border isn't tight */
+  display: inline-block;
 }
