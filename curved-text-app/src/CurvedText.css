@@ -1,0 +1,19 @@
+.curved-text-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.curved-char {
+  position: absolute;
+  font-size: 24px;
+  height: 100px;
+  transform-origin: center;
+}
+
+.straight-text {
+  font-size: 24px;
+}
