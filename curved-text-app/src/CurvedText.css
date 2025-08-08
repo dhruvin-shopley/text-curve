@@ -1,16 +1,15 @@
-.curved-text-container-final {
+.curved-text-container {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 300px; /* Give it some space to curve into */
-  border: 1px solid grey;
-  padding: 2em;
+  width: 100%;
 }
 
-.curved-char-final {
+.curved-char {
   position: absolute;
   font-size: 24px;
-  transform-origin: center center;
-  transition: transform 0.1s linear; /* Add a small transition for smoothness */
+  /* The transform-origin is set inline by the JS */
+  /* A transition can help smooth the changes */
+  transition: transform 0.2s ease-out;
 }

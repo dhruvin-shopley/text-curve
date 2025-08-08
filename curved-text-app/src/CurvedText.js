@@ -9,44 +9,54 @@ const CurvedText = ({ text, curve }) => {
     return null;
   }
 
+  if (parseInt(curve) === 0) {
+    return <div className="curved-text-container">{text}</div>;
+  }
+
   const FONT_SIZE = 24;
-  const CHAR_WIDTH = FONT_SIZE * 0.7; // A better heuristic for char width
+  const CHAR_WIDTH_GUESS = FONT_SIZE * 0.6;
 
-  // Interpolation factor (from 0 to 1)
-  const t = Math.abs(curve) / 100;
-  const sign = Math.sign(curve);
+  // --- Calculate Radius based on curve ---
+  // A curve of 100 will put the text in a 360-degree circle.
+  // The arc angle is proportional to the curve value.
+  const arcAngleDegrees = Math.abs(curve) * 3.6;
+  const arcAngleRadians = arcAngleDegrees * (Math.PI / 180);
 
-  // --- Circle properties (for t = 1) ---
-  const circleCircumference = numChars * CHAR_WIDTH * 1.5; // Add some spacing
-  const circleRadius = circleCircumference / (2 * Math.PI);
-  const anglePerCharCircle = (2 * Math.PI) / numChars;
+  // The length of the text arc.
+  const arcLength = numChars * CHAR_WIDTH_GUESS;
+
+  // Calculate the radius of the circle defined by the arc.
+  // R = L / theta
+  const radius = arcLength / arcAngleRadians;
 
   return (
-    <div className="curved-text-container-final">
+    <div
+      className="curved-text-container"
+      style={{
+        minHeight: `${Math.min(radius, 400)}px`, // Cap the height for shallow curves
+        border: '1px solid grey',
+        padding: '2em'
+      }}
+    >
       {characters.map((char, i) => {
-        // --- Position 1: Straight Line (t = 0) ---
-        const xStraight = (i - (numChars - 1) / 2) * CHAR_WIDTH;
-        const yStraight = 0;
+        // The horizontal position of the character if the text were straight.
+        const xOffset = (i - (numChars - 1) / 2) * CHAR_WIDTH_GUESS;
 
-        // --- Position 2: Full Circle (t = 1) ---
-        const angle = (i - (numChars - 1) / 2) * anglePerCharCircle;
-        const xCircle = circleRadius * Math.sin(angle);
-        const yCircle = -sign * (circleRadius * Math.cos(angle) - circleRadius);
-
-        // --- Interpolated Position ---
-        const x = (1 - t) * xStraight + t * xCircle;
-        const y = (1 - t) * yStraight + t * yCircle;
-
-        // --- Interpolated Rotation ---
-        const rotationCircle = (angle * 180) / Math.PI;
-        const rotation = t * rotationCircle;
+        // The angle to rotate this character.
+        // It's the angle equivalent of its xOffset on the circle.
+        const rotateAngleRad = xOffset / radius;
+        const rotateAngleDeg = (rotateAngleRad * 180) / Math.PI;
 
         const style = {
-          transform: `translate(${x}px, ${y}px) rotate(${rotation}deg)`,
+          // Position the character horizontally first.
+          // Then rotate it around the distant transform origin.
+          transform: `translateX(${xOffset}px) rotate(${sign * rotateAngleDeg}deg)`,
+          // The transform origin's Y is the radius.
+          transformOrigin: `center ${sign * radius}px`,
         };
 
         return (
-          <span key={i} className="curved-char-final" style={style}>
+          <span key={i} className="curved-char" style={style}>
             {char}
           </span>
         );
@@ -54,5 +64,8 @@ const CurvedText = ({ text, curve }) => {
     </div>
   );
 };
+
+// Helper to get the sign of the curve, defaulting to 1 for 0.
+const sign = (n) => (n === 0 ? 1 : Math.sign(n));
 
 export default CurvedText;
