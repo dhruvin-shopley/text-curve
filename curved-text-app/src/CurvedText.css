@@ -1,21 +1,16 @@
-.curved-text-wrapper {
-  display: inline-block; /* To make the border fit the content */
+.curved-text-container-final {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px; /* Give it some space to curve into */
+  border: 1px solid grey;
+  padding: 2em;
 }
 
-.curved-text-svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible; /* To prevent clipping of text that might go slightly outside the viewBox */
-}
-
-.curved-text-text {
-  fill: currentColor; /* Inherit color from parent */
-}
-
-.straight-text {
+.curved-char-final {
+  position: absolute;
   font-size: 24px;
-  padding: 1em; /* Add some padding so the border isn't tight */
-  display: inline-block;
+  transform-origin: center center;
+  transition: transform 0.1s linear; /* Add a small transition for smoothness */
 }
